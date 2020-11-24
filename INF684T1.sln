@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30225.117
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "INF684T1", "INF684T1\INF684T1.vcxproj", "{021A809A-88FC-4933-9379-942EC701048C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x64 = Debug|x64
+		Debug|x86 = Debug|x86
+		Release|x64 = Release|x64
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{021A809A-88FC-4933-9379-942EC701048C}.Debug|x64.ActiveCfg = Debug|x64
+		{021A809A-88FC-4933-9379-942EC701048C}.Debug|x64.Build.0 = Debug|x64
+		{021A809A-88FC-4933-9379-942EC701048C}.Debug|x86.ActiveCfg = Debug|Win32
+		{021A809A-88FC-4933-9379-942EC701048C}.Debug|x86.Build.0 = Debug|Win32
+		{021A809A-88FC-4933-9379-942EC701048C}.Release|x64.ActiveCfg = Release|x64
+		{021A809A-88FC-4933-9379-942EC701048C}.Release|x64.Build.0 = Release|x64
+		{021A809A-88FC-4933-9379-942EC701048C}.Release|x86.ActiveCfg = Release|Win32
+		{021A809A-88FC-4933-9379-942EC701048C}.Release|x86.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {B13A660F-9659-42EA-A262-A85019AFD0C3}
+	EndGlobalSection
+EndGlobal

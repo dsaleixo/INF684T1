@@ -1,0 +1,8 @@
+Linha Colunha
+numero_obstaculo
+obstaculo1
+obstaculo2
+obstaculo3
+obstaculo4
+...
+obstaculoN
