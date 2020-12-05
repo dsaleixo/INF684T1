@@ -101,7 +101,6 @@ void ModeloPadrao::rodar() {
         throw(-1);
     }
     cout << "valor = " << cplex.getObjValue() << endl;
-
     vector<int> Caminho;
     for (int i = 0; i < d->n_locais; i++)Caminho.push_back(-1);
 
