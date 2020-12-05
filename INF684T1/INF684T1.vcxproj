@@ -143,12 +143,22 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Base.cpp" />
     <ClCompile Include="Dados.cpp" />
     <ClCompile Include="INF684T1.cpp" />
+    <ClCompile Include="ModeloGTSP_Kara.cpp" />
+    <ClCompile Include="ModeloPadrao.cpp" />
+    <ClCompile Include="ModeloPadraoLinear.cpp" />
+    <ClCompile Include="ModelosDavid.cpp" />
     <ClCompile Include="Pontos.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Base.h" />
     <ClInclude Include="Dados.h" />
+    <ClInclude Include="ModeloGTSP_Kara.h" />
+    <ClInclude Include="ModeloPadrao.h" />
+    <ClInclude Include="ModeloPadraoLinear.h" />
+    <ClInclude Include="ModelosDavid.h" />
     <ClInclude Include="Pontos.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
