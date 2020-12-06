@@ -97,6 +97,7 @@ void ModeloPadrao::rodar() {
     IloCplex cplex(mod);
     cplex.setParam(IloCplex::EpGap, 0.01);
     cplex.setParam(IloCplex::TiLim, 1000000000);
+    cplex.setOut(env.getNullStream());
     if (!cplex.solve()) {
         throw(-1);
     }

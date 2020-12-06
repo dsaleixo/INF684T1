@@ -8,7 +8,7 @@
 #include "ModeloPadraoLinear.h"
 #include "ModelosDavid.h"
 #include "ModeloGTSP_Kara.h"
-
+#include "ModeloGTSP_F1.h"
 int main()
 {
     std::cout << "Hello World!\n";
@@ -19,10 +19,23 @@ int main()
     // 0 4 8
     Base* model = new ModeloGTSP_Kara(d);
     
-    model->rodar()
+    model->rodar();
     
+
+    model = new ModeloGTSP_F1(d);
+
+    model->rodar();
+
+
+
     return 0;
+
+
+
 }
+
+//(0,3) (3,6) (6,8) (8,9) (9,7) (7,4) (4,5) (5,2) (2,1) (1,0)
+//
 
 // Executar programa: Ctrl + F5 ou Menu Depurar > Iniciar Sem Depuração
 // Depurar programa: F5 ou menu Depurar > Iniciar Depuração
