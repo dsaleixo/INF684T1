@@ -185,6 +185,7 @@ void ModeloGTSP_F1::rodar() {
         antes.push_back(-1);
     }
 
+
     for (int i = 0; i < d->n_locais; i++) {
         for (int j = 0; j < d->n_locais; j++) {
             if (j == i) {
