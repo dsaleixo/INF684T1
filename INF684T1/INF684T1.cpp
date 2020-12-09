@@ -9,25 +9,35 @@
 #include "ModelosDavid.h"
 #include "ModeloGTSP_Kara.h"
 #include "ModeloGTSP_F1.h"
+#include "ModeloGTSP_F2.h"
+#include "Vertice.h"
 int main()
 {
     std::cout << "Hello World!\n";
     Dados d;
-    d.ler("mapas/mapa4.txt");
+    d.ler("mapas/mapa3.txt");
     d.imprimir();
     cout << "ddddddddd" << endl;
     // 0 4 8
-    Base* model = new ModeloGTSP_Kara(d);
+   // Base*  model = new ModeloGTSP_F1(d);
+
+  //  model->rodar();
+
+  //  model = new ModeloPadrao(d);
+
+    //model->rodar();
+    vector<Vertice> v;
+
+    d.NN(v);
+
+    d.Avalia(v);
+
+    for (int i = 1; i < v.size(); i++) {
+        v[i].a = 1;
+    }
+    d.Avalia(v);
+    d.CO(v);
     
-    model->rodar();
-    
-
-    model = new ModeloGTSP_F1(d);
-
-    model->rodar();
-
-
-
     return 0;
 
 

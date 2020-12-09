@@ -33,20 +33,14 @@ void ModeloGTSP_Kara::rodar() {
                     if (i == j) {
                         continue;
                     }
-                    else if (i == 0 and d->Vizinhos[j][ji] == 0 ) {
-                        obj += d->lambda* d->C[d->Vizinhos[j][ji]][j] * X[i][li][j][ji];
-                    }
-                    else if (i== 0 and d->Vizinhos[j][ji] != 0 ) {
-                        obj += 100000.0 * X[i][li][j][ji];
-                        
-                    }
-                    else {
-                        obj += d->Custo[i][li][j][ji] * X[i][li][j][ji];
-                    }
+
+
+                    obj += d->Custo[i][li][j][ji] * X[i][li][j][ji];
+
                 }
             }
         }
-    }
+    } 
 
     
     IloNumVarArray u(env, d->n_locais, 0.0, IloInfinity, ILOFLOAT);

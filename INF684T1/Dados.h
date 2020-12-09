@@ -10,6 +10,8 @@
 #include "Pontos.h"
 #include <algorithm> 
 #include <map>
+#include "Vertice.h"
+#include <queue> 
 
 using namespace std;
 class Dados
@@ -38,7 +40,10 @@ class Dados
         void imprimir();
         void floyd2();
         vector<int> Caminho_floyd(int i, int li, int j, int lj);
-
+        void NN(vector<Vertice>& v);
+        void NN2(vector<Vertice>& v);
+        void Avalia(vector<Vertice>& P);
+        void CO(vector<Vertice>& P);
 
 };
 

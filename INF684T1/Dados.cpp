@@ -1,5 +1,6 @@
 #include "Dados.h"
-
+#include "Vertice.h"
+#include <set>
 
 void Dados::ler(string s) {
     ifstream in(s);
@@ -188,7 +189,24 @@ void Dados::floyd2() {
         }
             
     }
-
+    for (int i = 0; i < n_locais; i++) {
+        for (int li = 0; li < Vizinhos[i].size(); li++) {
+            for (int j = 0; j < n_locais; j++) {
+                for (int ji = 0; ji < Vizinhos[j].size(); ji++) {
+                    if (i == j) {
+                        continue;
+                    }
+                    else if (i == 0 and Vizinhos[j][ji] == 0) {
+                        Custo[i][li][j][ji] = lambda * C[Vizinhos[j][ji]][j];
+                    }
+                    else if (i == 0 and Vizinhos[j][ji] != 0) {
+                        Custo[i][li][j][ji] = 100000.0;
+                    }
+                  
+                }
+            }
+        }
+    }
 }
 
 
@@ -233,3 +251,220 @@ vector<int> Dados::Caminho_floyd(int i, int li, int j, int lj) {
     v.push_back(j);
      return v;
 }
+
+
+void Dados::NN(vector<Vertice>& P) {
+    const int n = this->n_locais;
+    vector<bool> visitado(n, false );
+    set<int> aberto;
+    for (int i = 1; i < n; i++) {
+        aberto.insert(i);
+    }
+
+    int v = 0;
+    int a = 0;
+    float menor = 10000000;
+    for (int i = 0; i < Vizinhos[0].size(); i++) {
+        if (C[0][Vizinhos[0][i]] < menor) {
+            menor = C[0][Vizinhos[0][i]];
+            v = Vizinhos[0][i];
+        }
+    }
+    Vertice c;
+    c.v = v;
+    c.a = a;
+    visitado[0] = true;
+    visitado[c.v] = true;
+    aberto.erase(c.v);
+    P.push_back(c);
+    int ult = 0;
+    while (!aberto.empty())
+    {
+        bool achou=false;
+        menor = 1000000;
+        Vertice c1;
+
+    
+        for (int i = 0; i < Vizinhos[P[ult].v].size(); i++) {
+            int vis = Vizinhos[P[ult].v][i];
+        
+            if (menor > Custo[P[ult].v][P[ult].a][vis][Map_vizinho[vis][P[ult].v]] && !visitado[vis]) {
+                menor = Custo[P[ult].v][P[ult].a][vis][Map_vizinho[vis][P[ult].v]];
+                c1.v = vis;
+                c1.a = Map_vizinho[vis][P[ult].v];
+                achou = true;
+       
+            }
+        }
+        if (achou) {
+               
+            P.push_back(c1);
+            ult++;
+            
+            aberto.erase(c1.v);
+            visitado[c1.v] = true;
+            continue;
+        }
+        for (int i : aberto) {
+            for (int j = 0; j < Vizinhos[i].size(); j++) {
+                if (menor > Custo[P[ult].v][P[ult].a][i][j]) {
+                    menor = Custo[P[ult].v][P[ult].a][i][j];
+                    c1.v = i;
+                    c1.a = j;
+                }
+            }
+        }
+
+        P.push_back(c1);
+        ult++;
+        aberto.erase(c1.v);
+        visitado[c1.v] = true;
+
+
+
+    }
+    menor = 10000000;
+    for (int i = 0; i<Vizinhos[0].size(); i++) {
+        
+        if (menor > Custo[P[ult].v][P[ult].a][0][i]) {
+            menor = Custo[P[ult].v][P[ult].a][0][i];
+            c.a=i;
+            c.v=0;
+        }
+    }
+    P.push_back(c);
+
+
+    return;
+}
+
+
+void Dados::Avalia(vector<Vertice>& P) {
+
+    
+
+    double soma = Custo[P[P.size() - 1].v][P[P.size()-1].a][P[0].v][P[0].a];
+    cout << endl;
+    cout << "(" << Vizinhos[P[0].v][P[0].a] << "," << P[0].v << ") ";
+    for (int i = 1; i < P.size();i++) {
+        soma += Custo[P[i-1].v][P[i-1].a][P[i].v][P[i].a];
+        cout << "(" <<Locais[ Vizinhos[P[i].v][P[i].a]].id << "," <<Locais[ P[i].v ].id<< ") ";
+      
+      
+        // (0, 1) (1, 2) (2, 5) (5, 7) (7, 10) (10, 9) (9, 6) (6, 3) (0, 4) (3, 0)
+         //0 1 2 5 4 7 10 9 6 3 0
+    }
+    cout << endl << "Custo = " << soma << endl;;;
+
+    
+
+
+
+}
+
+bool operator<(const Vertice& c1, const Vertice& c2) {
+    if (c1.v == c2.v) {
+        return c1.a < c2.a;
+    }
+    return c1.v < c2.v;
+}
+
+struct compare
+{
+    bool operator()(pair<float, pair<Vertice, Vertice>>& p1, pair<float, pair<Vertice, Vertice>>& p2) const noexcept {
+        
+            return p1.first < p2.first;    // ***EDIT***
+    }
+};
+
+
+void Dados::CO(vector<Vertice>& P) {
+
+    
+
+    //auto aux = make_pair(P[n_locais - 1], vis);
+   
+   
+
+    
+    map<Vertice, Vertice> Caminho;
+    priority_queue<pair<float, pair<Vertice,Vertice>>> pq;
+    set<Vertice> fechado;
+
+    
+    
+    for (int i = 0; i < Vizinhos[P[1].v].size(); i++) {
+       // cout << itr->second[i].v << " "<< itr->second[i].a << endl;
+        float c = -Custo[P[0].v][P[0].a][P[1].v][i];
+        Vertice aux;
+        aux.v = 1;
+        aux.a = i;
+        pq.push(make_pair(c, make_pair(aux, P[0])));
+    }
+    
+
+   
+    Vertice obj;
+    obj.v = 0;
+    obj.a = P[0].a;
+    
+    float custo_total=-1;
+    while (!pq.empty()) {
+        
+        priority_queue<pair<float, pair<Vertice, Vertice>>> temp;
+  
+        while (!pq.empty()) {
+            auto tmp = pq.top();
+            pq.pop();
+           // cout << Vizinhos[P[tmp.second.first.v].v][tmp.second.first.a] <<" " <<P[tmp.second.first.v].v << " " << tmp.first << endl;
+            temp.push(tmp);
+        }
+
+
+        while (!temp.empty()) {
+            auto tmp = temp.top();
+            temp.pop();
+           
+            pq.push(tmp);
+        }
+
+        auto v = pq.top();
+        pq.pop();
+        Vertice no = v.second.first;
+        Vertice pai = v.second.second;
+        float cc = v.first;
+       // cout << " sainda  = " << Vizinhos[no.v][no.a] << " " << no.v<<"   " << cc<< endl;
+        if (obj == no) {
+            custo_total = cc;
+            Caminho.insert(make_pair(pai, no));
+            break;
+        }
+
+        if (fechado.find(no) != fechado.end()) {
+            continue;
+        }
+
+        fechado.insert(no);
+      
+        int prox = (no.v + 1) % n_locais;
+
+        for (int i = 0; i < Vizinhos[P[prox].v].size(); i++) {
+            
+            //cout << " gg " << Vizinhos[P[no.v].v][no.a] << " " << P[no.v].v << "       " << Vizinhos[P[prox].v][i] << " " << P[prox].v;
+
+            float c = -Custo[P[no.v].v][no.a][P[prox].v][i] + cc;
+           // cout<<" "
+          //  cout<< " c= " << c << endl;
+            Vertice aux2(prox,i);
+
+            pq.push(make_pair(c, make_pair(aux2, no)));
+        }
+
+
+    }
+
+    cout <<" sera ? " <<custo_total << endl;
+    
+}
+
+
