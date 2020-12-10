@@ -42,8 +42,10 @@ class Dados
         vector<int> Caminho_floyd(int i, int li, int j, int lj);
         void NN(vector<Vertice>& v);
         void NN2(vector<Vertice>& v);
-        void Avalia(vector<Vertice>& P);
-        void CO(vector<Vertice>& P);
+        float Avalia(vector<Vertice>& P);
+        float CO(vector<Vertice>& P);
+        float Wco_Busca(vector<Vertice>& P);
+        float BuscaLocalSwap(vector<Vertice>& P);
 
 };
 

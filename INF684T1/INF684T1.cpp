@@ -13,31 +13,34 @@
 #include "Vertice.h"
 int main()
 {
-    std::cout << "Hello World!\n";
+
     Dados d;
-    d.ler("mapas/mapa3.txt");
+    d.ler("mapas/mapa13.txt");
     d.imprimir();
-    cout << "ddddddddd" << endl;
+    //cout << "ddddddddd" << endl;
     // 0 4 8
-   // Base*  model = new ModeloGTSP_F1(d);
+    Base*  model = new ModeloGTSP_F1(d);
 
-  //  model->rodar();
+    model->rodar();
 
-  //  model = new ModeloPadrao(d);
+    model = new ModeloPadrao(d);
 
-    //model->rodar();
+    model->rodar();
+
+    return 0;
     vector<Vertice> v;
 
     d.NN(v);
 
-    d.Avalia(v);
+    cout << d.Avalia(v) << endl;;
 
-    for (int i = 1; i < v.size(); i++) {
-        v[i].a = 1;
-    }
-    d.Avalia(v);
-    d.CO(v);
+   // cout << d.BuscaLocalSwap(v) << endl;;
+
+   // d.Avalia(v);
+
+
     
+   
     return 0;
 
 
