@@ -32,7 +32,6 @@ int main(int argc, char* argv[])
     if (jogador == "2")model = new ModeloGTSP_Kara(d);
     if (jogador == "3")model = new ModeloPadrao(d);
     if (jogador == "4")model = new ModeloPadraoLinear(d);
-
     long double Tfinal;
     long double TInicial;
     TInicial = (clock() / (double)CLOCKS_PER_SEC);
