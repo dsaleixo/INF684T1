@@ -3,13 +3,9 @@
 
 #include <iostream>
 #include "Dados.h"
-#include "Base.h"
-#include "ModeloPadrao.h"
-#include "ModeloPadraoLinear.h"
-#include "ModelosDavid.h"
-#include "ModeloGTSP_Kara.h"
-#include "ModeloGTSP_F1.h"
-#include "ModeloGTSP_F2.h"
+#include "NoSolucao.h"
+
+
 #include "Vertice.h"
 int main(int argc, char* argv[])
 {
@@ -19,32 +15,28 @@ int main(int argc, char* argv[])
     cout << mapa << endl;
     Dados d;
     d.ler("mapas/mapa"+mapa+".txt");
-    d.imprimir();
-    //cout << "ddddddddd" << endl;
-    // 0 4 8
-  
-    Base* model = nullptr;
+    d.imprimir();    
 
-    cout << "j = " << jogador << " mapa = " << mapa << endl;
+    vector<Vertice> v;
+    d.NN(v);
+    d.Avalia(v);
 
-    if(jogador == "0")model = new ModeloGTSP_F1(d);
-    if (jogador == "1")model = new ModeloGTSP_F2(d);
-    if (jogador == "2")model = new ModeloGTSP_Kara(d);
-    if (jogador == "3")model = new ModeloPadrao(d);
-    if (jogador == "4")model = new ModeloPadraoLinear(d);
-    long double Tfinal;
-    long double TInicial;
-    TInicial = (clock() / (double)CLOCKS_PER_SEC);
-    model->rodar();
-    Tfinal = (clock() / (double)CLOCKS_PER_SEC) - TInicial;
-    cout << "Tempo(s): " << Tfinal << endl << endl;
-   
+    cout<<"fffffffffffffffffffff"<<endl<<endl;
+
+    Solucao s(d.n_locais);
+    for(int i =0;i<d.n_locais;i++){
+        s.FrameworkInsertionHeuristics(d);
+        s.imprime(d);
+
+    }
+    cout<<"custo"<<" "<<s.Avalia(d)<<endl;;
+    s.imprime(d);
+    s.Solucao_Vector(v);
+    d.CO(v);
+    d.Avalia(v);
+
     return 0;
-
-
-
 }
-
 //(0,3) (3,6) (6,8) (8,9) (9,7) (7,4) (4,5) (5,2) (2,1) (1,0)
 //
 
