@@ -8,8 +8,11 @@ void Glns::rodar(Dados &d){
 
     Solucao best_s(d.n_locais);
     best_s.FrameworkInsertionHeuristics(d,0);
-    Nobank b(0.25,0,0);
-    this->UnifiedInsertionHeuristic(best_s,d,b);
+    Nobank b(0.25,0,1);
+    this->insert(best_s,d,b);
+    best_s.imprime(d);
+    cout<<"custo = "<<best_s.Avalia(d)<<endl;
+
 
 }
 
@@ -35,6 +38,7 @@ void Glns::Constroi_Random(Solucao &s,Dados &d){
        int tam =100;
        this->lambda=lambda;
        this->noise=noise;
+       this->op=op;
 
    }
 
@@ -81,19 +85,21 @@ void Glns::UnifiedInsertionHeuristic(Solucao &s, Dados &d, Nobank &b){
         D.push_back(make_pair(Di,i));
     }
     sort(D.begin(),D.end());
-    for(int i=0;i<D.size();i++ ){
-        cout<<D[i].second<<" "<<D[i].first<<endl;;
-    }
-    cout<<endl<<endl;
+ 
+  
     while(l>0){
         int k = b.select_k(l);
-        Vertice v = s.FrameworkInsertionHeuristics(d,k);
+       
+        Vertice v = s.FrameworkInsertionHeuristics(d,D[k].second);
+      
         D.erase(D.begin()+k);
+       
+      
         l--;
         for(int i=0;i<D.size();i++ ){
             double new_Di =10000000;
-            for (int j = 0; j < d.Vizinhos[i].size(); j++) {
-                int aux1 = min(d.Custo[v.v][v.a][i][j],d.Custo[i][j][D[i].second][j]);
+            for (int j = 0; j < d.Vizinhos[D[i].second].size(); j++) {
+                int aux1 = min(d.Custo[v.v][v.a][D[i].second][j],d.Custo[D[i].second][j][v.v][v.a]);
                 if (new_Di > aux1) {
                     new_Di = aux1;
               
@@ -101,12 +107,52 @@ void Glns::UnifiedInsertionHeuristic(Solucao &s, Dados &d, Nobank &b){
             }
             D[i].first = min(D[i].first,new_Di);
         }
+        
         sort(D.begin(),D.end());
-        for(int i=0;i<D.size();i++ ){
-            cout<<D[i].second<<" "<<D[i].first<<endl;;
-        }
+        
         cout<<endl<<endl;
+        
 
     }
 
 }
+
+
+
+
+
+void Glns::Cheapest(Solucao &s, Dados &d, Nobank &b){
+   int l = s.aberto.size();
+   for(int i = 0 ;i<l;i++){
+       int v = s.Vi_Cheapest(d);
+       s.FrameworkInsertionHeuristics(d,v);
+   }
+
+}
+
+
+void Glns::insert(Solucao &s, Dados &d, Nobank &b){
+    if(b.op==0) {
+   
+        Cheapest(s,d,b);
+    
+    }
+    
+    else if(b.op==1){
+
+     UnifiedInsertionHeuristic(s,d,b);
+   
+
+    }
+}
+
+
+
+
+
+
+
+
+
+
+

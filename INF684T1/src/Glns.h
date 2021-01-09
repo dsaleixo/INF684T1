@@ -29,6 +29,8 @@ class Glns{
     void Constroi_InsertRandom(Solucao &s,Dados &d);
     void Constroi_Random(Solucao &s,Dados &d);
     void UnifiedInsertionHeuristic(Solucao &s, Dados &d, Nobank &b);
+    void Cheapest(Solucao &s, Dados &d, Nobank &b);
+    void insert(Solucao &s, Dados &d, Nobank &b);
 
     
 };
