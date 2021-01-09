@@ -4,36 +4,25 @@
 #include <iostream>
 #include "Dados.h"
 #include "NoSolucao.h"
-
+#include "Glns.h"
+#include <random>
 
 #include "Vertice.h"
 int main(int argc, char* argv[])
 {
-
+   
+   
     string mapa(argv[1]);
     string jogador(argv[2]);
     cout << mapa << endl;
     Dados d;
     d.ler("mapas/mapa"+mapa+".txt");
     d.imprimir();    
+    cout<<"mapa = "<<mapa<<"   jogador = "<<jogador<<endl;
+    
+    Glns g(0);
+    g.rodar(d);
 
-    vector<Vertice> v;
-    d.NN(v);
-    d.Avalia(v);
-
-    cout<<"fffffffffffffffffffff"<<endl<<endl;
-
-    Solucao s(d.n_locais);
-    for(int i =0;i<d.n_locais;i++){
-        s.FrameworkInsertionHeuristics(d);
-        s.imprime(d);
-
-    }
-    cout<<"custo"<<" "<<s.Avalia(d)<<endl;;
-    s.imprime(d);
-    s.Solucao_Vector(v);
-    d.CO(v);
-    d.Avalia(v);
 
     return 0;
 }

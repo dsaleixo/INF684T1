@@ -96,7 +96,7 @@ float Solucao::Avalia(Dados &d){
 
 
 
-void Solucao::FrameworkInsertionHeuristics(Dados &d){
+Vertice Solucao::FrameworkInsertionHeuristics(Dados &d,int k){
     int n = T.size()-1;
     if(TAM==0){
         Vertice c(-1,0);
@@ -109,10 +109,11 @@ void Solucao::FrameworkInsertionHeuristics(Dados &d){
         }
         Vertice dump( T.size()-1,-1);
         this->add(dump,c);
-        return ;
+        return c;
     }
 
-    int Vi = this->Vi_Cheapest(d);
+    int Vi = k;
+    
 
 
     float menor = 1000000;
@@ -158,11 +159,11 @@ void Solucao::FrameworkInsertionHeuristics(Dados &d){
 
     }
     this->add(dumb,v);
-
+    return v;
 }
 
 
-int Solucao::Vi_Farthest(Dados &d){
+int Solucao::Vi_Nearest(Dados &d){
 
     float menor = 10000000;
     int Vi=-1;
@@ -227,7 +228,7 @@ void Solucao::Vector_Solucao(vector<Vertice> &v){
 
 
 
-int Solucao::Vi_Nearest(Dados &d){
+int Solucao::Vi_Farthest(Dados &d){
 
     float maior = -1;
     int Vi=-1;
@@ -261,6 +262,7 @@ int Solucao::Vi_Nearest(Dados &d){
 
 int Solucao::Vi_Random(Dados &d){
     int n = aberto.size();
+   
     int g = rand() % n;
     int cont = 0;
     for (int i : aberto) {
@@ -276,7 +278,7 @@ int Solucao::Vi_Cheapest(Dados &d){
      int n = T.size()-1;
     for(int Vi : aberto){
         Vertice v(Vi,-1);
-        cout<<"teste "<<Vi<<endl;
+        
         int aux = T[n].prev;
         int aux1 = T[n].prox;
         for (int i = 0; i < d.Vizinhos[Vi].size(); i++) {
@@ -316,8 +318,43 @@ int Solucao::Vi_Cheapest(Dados &d){
 
         }
     }
-    cout<<"fdf "<<Vi_m<<endl;
-    cin>>Vi_m;
+   
     return Vi_m;
 }
 
+void Solucao::operator=(const Solucao &s){
+    this->aberto.clear();
+    this->T.clear();
+    this->TAM = s.TAM;
+    for(int i : s.aberto){
+        this->aberto.insert(i);
+    }
+    for(int i =0;i<s.T.size();i++){
+        this->T[i]=s.T[i];
+    }
+}
+
+
+double Solucao::Di(int i , Dados &d){
+    float menor = 10000000;
+    
+
+    int n = T.size()-1;
+   
+
+    
+        for (int j = 0; j < d.Vizinhos[i].size(); j++) {
+            int atual = T[n].prox;
+            while (atual != n){
+                int aux1 = min(d.Custo[atual][T[atual].a][i][j],d.Custo[i][j][atual][T[atual].a]);
+                 if (menor > aux1) {
+                menor = aux1;
+                
+                }
+                atual = T[atual].prox;
+
+            }
+        }
+           
+    return menor;
+}
