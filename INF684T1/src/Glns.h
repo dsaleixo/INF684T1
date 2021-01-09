@@ -31,6 +31,11 @@ class Glns{
     void UnifiedInsertionHeuristic(Solucao &s, Dados &d, Nobank &b);
     void Cheapest(Solucao &s, Dados &d, Nobank &b);
     void insert(Solucao &s, Dados &d, Nobank &b);
+    void remove(Solucao &s, Dados &d, Nobank &b,int l);
+    void RemovalHeuristicFramework(Solucao &s, Dados &d, Nobank &b,int l);
+    void UnifiedWorstRemoval(Solucao &s, Dados &d,vector<pair<double,int>> &R);
+
+
 
     
 };

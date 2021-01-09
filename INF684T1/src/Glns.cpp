@@ -7,22 +7,64 @@ Glns::Glns( int op_construdor){
 void Glns::rodar(Dados &d){
 
     Solucao best_s(d.n_locais);
-    best_s.FrameworkInsertionHeuristics(d,0);
+    best_s.NN(d);
     Nobank b(0.25,0,1);
-    this->insert(best_s,d,b);
+    Nobank bs(1,0,0);
+    best_s.imprime(d);
+   double melhor =best_s.Avalia(d);
+    cout<<"custo = "<<melhor<<endl;
+    
+    
+    for(int i=0;i<10000;i++){
+        int l = rand() % 10;
+        Solucao aux = best_s;
+        this->remove(aux,d,bs,l);
+        this->insert(aux,d,b);
+
+        vector<Vertice> vv;
+        aux.Solucao_Vector(vv);
+        d.CO(vv);
+        aux.Vector_Solucao(vv);
+
+
+        double novo = aux.Avalia(d);
+
+       // cout<<novo<<endl;
+       if(novo<melhor) {
+           melhor = novo;
+           best_s = aux;
+            cout<<i<<" custo = "<<melhor<<endl;
+       }
+      
+    }
     best_s.imprime(d);
     cout<<"custo = "<<best_s.Avalia(d)<<endl;
-
 
 }
 
 void Glns::Constroi_inicial(Solucao &s,Dados &d)  {
+        Nobank b(-1,-1,-1);
+        s.FrameworkInsertionHeuristics(d,0);
+        if(op_construdor==0) {
+            b.op=0;
+        }
+        else if(op_construdor==1){
+            b.op=1;
+            b.lambda=0;
 
-        if(op_construdor==0) s.FrameworkInsertionHeuristics(d,0);
-        else if(op_construdor==1)s.FrameworkInsertionHeuristics(d,1);
-        else if(op_construdor==2)s.FrameworkInsertionHeuristics(d,2);
-        else if(op_construdor==3)s.FrameworkInsertionHeuristics(d,3);
-        else if(op_construdor==1)this->Constroi_Random(s,d);
+        }
+        else if(op_construdor==2){
+            b.op=1;
+            b.lambda=10;
+
+        }
+        else if(op_construdor==3){
+            b.op=1;
+            b.lambda=1;
+
+        }
+        else if(op_construdor==4)this->Constroi_Random(s,d);
+         this->insert(s,d,b);
 
 }
 
@@ -110,7 +152,7 @@ void Glns::UnifiedInsertionHeuristic(Solucao &s, Dados &d, Nobank &b){
         
         sort(D.begin(),D.end());
         
-        cout<<endl<<endl;
+        
         
 
     }
@@ -147,6 +189,54 @@ void Glns::insert(Solucao &s, Dados &d, Nobank &b){
 }
 
 
+
+
+void Glns::remove(Solucao &s, Dados &d, Nobank &b,int l){
+    if(b.op==0)RemovalHeuristicFramework(s,d,b,l);
+    if(b.op==1)cout<<endl;
+
+}
+
+void Glns::RemovalHeuristicFramework(Solucao &s, Dados &d, Nobank &b,int l){
+
+    while(l>0){
+        
+        vector<pair<double,int>> R;
+        int k = b.select_k(s.TAM);
+        if(b.op==0)UnifiedWorstRemoval(s,d,R);
+        l--;
+        
+        s.remove(R[k].second);
+        
+    }
+}
+
+void Glns::UnifiedWorstRemoval(Solucao &s, Dados &d,vector<pair<double,int>> &R){
+
+    
+
+     int n = s.T.size()-1;
+    
+    
+    int atual = s.T[n].prox;
+    
+    while (atual != n){
+        int anterior = s.T[atual].prev;
+        if(anterior==n)anterior =s.T[anterior].prev;
+        int prox = s.T[atual].prox;
+        if(prox==n)prox =s.T[prox].prox;
+        double w = d.Custo[anterior][s.T[anterior].a][atual][s.T[atual].a]+
+                    d.Custo[atual][s.T[atual].a][prox][s.T[prox].a]-
+                    d.Custo[anterior][s.T[anterior].a][prox][s.T[prox].a];
+     
+        R.push_back(make_pair(w,atual));
+       atual = s.T[atual].prox;
+    
+    
+
+    }
+    sort(R.begin(),R.end());
+}
 
 
 

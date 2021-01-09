@@ -29,15 +29,15 @@
     aberto.erase(atual.v);
         
  }
- void Solucao::remove(Vertice v){
-     int anterior = T[v.v].prev;
-     int prox = T[v.v].prox;
+ void Solucao::remove(int v){
+     int anterior = T[v].prev;
+     int prox = T[v].prox;
 
      T[anterior].prox = prox;
      T[prox].prev = anterior;
-     T[v.v].usado = false;
+     T[v].usado = false;
      TAM--;
-     aberto.insert(v.v);
+     aberto.insert(v);
 
  }
 
@@ -216,12 +216,14 @@ void Solucao::Solucao_Vector(vector<Vertice> &V){
 void Solucao::Vector_Solucao(vector<Vertice> &v){
      Vertice dump;
     dump.v=T.size()-1;
+    Solucao aux(T.size()-1);
     for(int i=0;i<v.size();i++){
-        this->add(dump,v[i]);
+        aux.add(dump,v[i]);
         
         dump = v[i];
 
     }
+    *this = aux;
 
 }
 
@@ -324,13 +326,16 @@ int Solucao::Vi_Cheapest(Dados &d){
 
 void Solucao::operator=(const Solucao &s){
     this->aberto.clear();
-    this->T.clear();
+    
     this->TAM = s.TAM;
     for(int i : s.aberto){
         this->aberto.insert(i);
     }
     for(int i =0;i<s.T.size();i++){
-        this->T[i]=s.T[i];
+        this->T[i].a=s.T[i].a;
+        this->T[i].prox=s.T[i].prox;
+        this->T[i].prev=s.T[i].prev;
+        this->T[i].usado=s.T[i].usado;
     }
 }
 

@@ -28,7 +28,7 @@ public:
     int TAM;
     Solucao(int n);
     void add(Vertice anterior, Vertice atual);
-    void remove(Vertice v);
+    void remove(int v);
     void NN(Dados &d);
     void imprime(Dados &d);
     float Avalia(Dados &d);
