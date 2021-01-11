@@ -3,7 +3,7 @@
 Glns::Glns( int m,int op_construdor,float p1,float p2,float p3,int num_trials,int num_warm, float epslon ){
     this->op_construdor = op_construdor;
     this->p1 = p1;
-    this->num_iterations =120*m;
+    this->num_iterations =60*m;
     this->p2=p2;
     this->p3=p3;
     this->num_trials=num_trials;
@@ -11,8 +11,8 @@ Glns::Glns( int m,int op_construdor,float p1,float p2,float p3,int num_trials,in
     this->first_improve = m*15;
     this->last_improve=m*30;
     this->epslon = epslon;
-    double labdas_i[]= {0,1,10};
-    double labdas_f[]= {1, 1.41,10};
+    double labdas_i[]= {0,0.1,0.25,0.5,1.2,1.75,10};
+    double labdas_f[]= {1,1.1, 1.41,2,10};
     double noise[] = {0,0.1,0.25,0.5,0.75};
     for (double i : labdas_i){
         for(double j : noise){
@@ -48,10 +48,13 @@ void Glns::rodar(Dados &d){
 
     for(int nt=0;nt<this->num_trials;nt++){
         Solucao T(d.n_locais);
-       // T.FrameworkInsertionHeuristics(d,0,0.0);
-       //this->insert(T,d,b);
-       // T.NN(d);
-       this->Constroi_Random(T,d);
+        if(this->op_construdor==0){
+             T.FrameworkInsertionHeuristics(d,0,0.0);
+          this->insert(T,d,b);
+        }
+       else if (this->op_construdor==1) T.NN(d);
+       else this->Constroi_Random(T,d);
+       
         double  T_custo = T.Avalia(d);
         int ult_m=0;
         if(T_custo< melhor){
@@ -59,64 +62,65 @@ void Glns::rodar(Dados &d){
             best_s = T;
             cout<<"custo = "<<melhor<<endl;
         }
-        double ln_meio= 0.18232155679;
-        float temp= (T_custo - T_custo*(1+this->p1))/ln_meio;
-        float c = pow((T_custo - T_custo*(1+this->p2))/(ln_meio*temp),1.0/this->num_iterations);
-        this->reset_weight(this->Bi);
-        this->reset_weight(this->Bf);
-        float dest =0.3;
-        for(int i=0;i<this->num_iterations;i++){
-            //cout<<i<<" "<<this->num_iterations<<endl;
-            if (this->num_iterations/2==i){
-                this->reset_weight(this->Bi);
-                this->reset_weight(this->Bf);
+
+        for(int rw = 0;rw<this->num_warm;rw++){
+            double ln_meio= 0.18232155679;
+            float temp= (T_custo - T_custo*(1+this->p1))/ln_meio;
+            float c = pow((T_custo - T_custo*(1+this->p2))/(ln_meio*temp),1.0/this->num_iterations);
+            this->atualiza_weight(this->Bi);
+            this->atualiza_weight(this->Bf);
+            float dest =0.35;
+            for(int i=0;i<this->num_iterations;i++){
+                //cout<<i<<" "<<this->num_iterations<<endl;
+                if (this->num_iterations/2==i){
+                    this->reset_weight(this->Bi);
+                    this->reset_weight(this->Bf);
+                }
+                int hf = this->seleciona_heurisca(this->Bf);
+                int hi = this->seleciona_heurisca(this->Bi);
+            // cout<<"ddd "<<hf<<' '<<hi<<endl;
+                int l = rand() % int(d.n_locais*dest);
+                Solucao T_new = T;
+                this->remove(T_new ,d,this->Bf[hf],l);
+                this->insert(T_new ,d,this->Bi[hi]);
+
+                vector<Vertice> vv;
+                T_new .Solucao_Vector(vv);
+                d.CO(vv);
+                T_new .Vector_Solucao(vv);
+
+
+                double novo = T_new .Avalia(d);
+
+            // cout<<novo<<endl;
+                if(novo<melhor) {
+                    melhor = novo;
+                    best_s = T_new ;
+                        cout<<i<<" custo = "<<melhor<<" "<<hi<<" "<<hf<<endl;
+                        ult_m = i;
+                }
+                if (this->accept(T_custo,novo,temp)){
+                    T_custo=novo;
+                    T= T_new;
+                }
+                temp = temp*c;
+                
+
+                if(this->last_improve<i - ult_m){
+                    break;
+                }
+                double score = max((T_custo-novo)/T_custo,0.0);
+                Bi[hi].score +=score;
+                Bf[hf].score +=score;
+                Bi[hi].n +=1;
+                Bf[hf].n +=1;
+               
+            // cout<<hi<<" "<<hf<<endl;
+                int y;
+                //cin>>y;
+                
             }
-            int hf = this->seleciona_heurisca(this->Bf);
-            int hi = this->seleciona_heurisca(this->Bi);
-           // cout<<"ddd "<<hf<<' '<<hi<<endl;
-            int l = rand() % int(d.n_locais*dest);
-            Solucao T_new = T;
-            this->remove(T_new ,d,this->Bf[hf],l);
-            this->insert(T_new ,d,this->Bi[hi]);
-
-            vector<Vertice> vv;
-            T_new .Solucao_Vector(vv);
-            d.CO(vv);
-            T_new .Vector_Solucao(vv);
-
-
-            double novo = T_new .Avalia(d);
-
-        // cout<<novo<<endl;
-            if(novo<melhor) {
-                melhor = novo;
-                best_s = T_new ;
-                    cout<<i<<" custo = "<<melhor<<" "<<hi<<" "<<hf<<endl;
-                    ult_m = i;
-            }
-            if (this->accept(T_custo,novo,temp)){
-                T_custo=novo;
-                T= T_new;
-            }
-            temp = temp*c;
-            
-
-            if(this->last_improve<i - ult_m){
-                break;
-            }
-            double score = max((T_custo-novo)/T_custo,0.0);
-            Bi[hi].score +=score;
-            Bf[hf].score +=score;
-            Bi[hi].n +=1;
-            Bf[hf].n +=1;
-            atualiza_weight(this->Bi);
-            atualiza_weight(this->Bf);
-           // cout<<hi<<" "<<hf<<endl;
-            int y;
-            //cin>>y;
-            
         }
-        
     }
     best_s.imprime(d);
     cout<<"custo = "<<best_s.Avalia(d)<<endl;

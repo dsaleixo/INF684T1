@@ -20,7 +20,7 @@ int main(int argc, char* argv[])
     d.imprimir();    
     cout<<"mapa = "<<mapa<<"   jogador = "<<jogador<<endl;
     
-    Glns g(d.n_locais,0,0.05,0.0005,0.005,10,5,0.5);
+    Glns g(d.n_locais,atoi(argv[2]),0.05,0.0005,0.005,20,5,0.5);
     g.rodar(d);
 
 
