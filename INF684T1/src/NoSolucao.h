@@ -2,6 +2,7 @@
 #include <vector>
 #include "Vertice.h"
 #include "Dados.h"
+#include <random>
 
 typedef int (*Operacao)(Dados &d);
 
@@ -32,7 +33,7 @@ public:
     void NN(Dados &d);
     void imprime(Dados &d);
     float Avalia(Dados &d);
-    Vertice FrameworkInsertionHeuristics(Dados &d,int k); 
+    Vertice FrameworkInsertionHeuristics(Dados &d,int k,float max_noisy); 
     int Vi_Nearest(Dados &d);
     int Vi_Farthest(Dados &d);
     int Vi_Random(Dados &d);
@@ -41,6 +42,8 @@ public:
     void Vector_Solucao(vector<Vertice> &V);
     void operator=(const Solucao &s);
     double Di(int i , Dados &d);
+    int getKeismo(int k );
+    
     
     
 

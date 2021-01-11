@@ -96,7 +96,7 @@ float Solucao::Avalia(Dados &d){
 
 
 
-Vertice Solucao::FrameworkInsertionHeuristics(Dados &d,int k){
+Vertice Solucao::FrameworkInsertionHeuristics(Dados &d,int k,float max_noisy){
     int n = T.size()-1;
     if(TAM==0){
         Vertice c(-1,0);
@@ -111,7 +111,9 @@ Vertice Solucao::FrameworkInsertionHeuristics(Dados &d,int k){
         this->add(dump,c);
         return c;
     }
-
+    uniform_real_distribution<double> unif(0,max_noisy);
+   default_random_engine re;
+   double a_random_double = unif(re);
     int Vi = k;
     
 
@@ -126,6 +128,9 @@ Vertice Solucao::FrameworkInsertionHeuristics(Dados &d,int k){
         float w = d.Custo[aux][T[aux].a][Vi][i] +
                 d.Custo[Vi][i][aux1][T[aux1].a] -
                     d.Custo[aux][T[aux].a][aux1][T[aux1].a];
+        
+         double a_random_double = unif(re);
+         w*=(1+a_random_double);
         if (w < menor) {
             menor = w;
             v.a=i;
@@ -147,6 +152,8 @@ Vertice Solucao::FrameworkInsertionHeuristics(Dados &d,int k){
             float w = d.Custo[anterior][T[anterior].a][Vi][i] +
                     d.Custo[Vi][i][atual][T[atual].a]-
                         d.Custo[anterior][T[anterior].a][atual][T[atual].a];
+            double a_random_double = unif(re);
+            w*=(1+a_random_double);
             if (w < menor) {
                 menor = w;
                 v.a=i;
@@ -175,7 +182,7 @@ int Solucao::Vi_Nearest(Dados &d){
         for (int j = 0; j < d.Vizinhos[i].size(); j++) {
             int atual = T[n].prox;
             while (atual != n){
-                int aux1 = min(d.Custo[atual][T[atual].a][i][j],d.Custo[i][j][atual][T[atual].a]);
+                double aux1 = min(d.Custo[atual][T[atual].a][i][j],d.Custo[i][j][atual][T[atual].a]);
                  if (menor > aux1) {
                 menor = aux1;
                 Vi = i;
@@ -232,7 +239,7 @@ void Solucao::Vector_Solucao(vector<Vertice> &v){
 
 int Solucao::Vi_Farthest(Dados &d){
 
-    float maior = -1;
+    double maior = -1;
     int Vi=-1;
 
     int n = T.size()-1;
@@ -243,7 +250,7 @@ int Solucao::Vi_Farthest(Dados &d){
         for (int j = 0; j < d.Vizinhos[i].size(); j++) {
             int atual = T[n].prox;
             while (atual != n){
-                int aux1 = min(d.Custo[atual][T[atual].a][i][j],d.Custo[i][j][atual][T[atual].a]);
+                double aux1 = min(d.Custo[atual][T[atual].a][i][j],d.Custo[i][j][atual][T[atual].a]);
                  if (menor > aux1) {
                 menor = aux1;
                 
@@ -275,7 +282,7 @@ int Solucao::Vi_Random(Dados &d){
 
 
 int Solucao::Vi_Cheapest(Dados &d){
-    float menor = 1000000;
+    double menor = 1000000;
     int Vi_m = -1;
      int n = T.size()-1;
     for(int Vi : aberto){
@@ -284,7 +291,7 @@ int Solucao::Vi_Cheapest(Dados &d){
         int aux = T[n].prev;
         int aux1 = T[n].prox;
         for (int i = 0; i < d.Vizinhos[Vi].size(); i++) {
-            float w = d.Custo[aux][T[aux].a][Vi][i] +
+            double w = d.Custo[aux][T[aux].a][Vi][i] +
                     d.Custo[Vi][i][aux1][T[aux1].a] -
                         d.Custo[aux][T[aux].a][aux1][T[aux1].a];
             if (w < menor) {
@@ -362,4 +369,24 @@ double Solucao::Di(int i , Dados &d){
         }
            
     return menor;
+}
+
+
+
+
+int Solucao::getKeismo(int k ){
+     int n = T.size()-1;
+
+    
+    int atual = T[n].prox;
+    int i=0;
+ 
+    while (atual != n){
+        if(i==k)return atual;
+        i++;
+       atual = T[atual].prox;
+    }
+
+    
+
 }
