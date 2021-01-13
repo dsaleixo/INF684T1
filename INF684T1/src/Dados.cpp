@@ -456,25 +456,62 @@ void Dados::NN2(vector<Vertice>& P) {
 
 
 
-
-
-float Dados::Avalia(vector<Vertice>& P) {
-
-    
-
-    double soma = Custo[P[P.size() - 1].v][P[P.size()-1].a][P[0].v][P[0].a];
-    
-    cout << endl;
+void Dados::imprimir(vector<Vertice>& P){
+      cout << endl;
     cout << "(" << Vizinhos[P[0].v][P[0].a] << "," << P[0].v << ") ";
     for (int i = 1; i < P.size();i++) {
-        soma += Custo[P[i-1].v][P[i-1].a][P[i].v][P[i].a];
+      //  soma += Custo[P[i-1].v][P[i-1].a][P[i].v][P[i].a];
         cout << "(" <<Locais[ Vizinhos[P[i].v][P[i].a]].id << "," <<Locais[ P[i].v ].id<< ") ";
+    
+    }
+    cout<<endl;
+
+    
+}
+
+
+double Dados::Avalia_w(vector<Vertice>& P) {
+
+    
+
+    double soma = 0;
+    
+    //cout << endl;
+   // cout << "(" << Vizinhos[P[0].v][P[0].a] << "," << P[0].v << ") ";
+    for (int i = 1; i < P.size();i++) {
+        soma += Custo[P[i-1].v][P[i-1].a][P[i].v][P[i].a];
+    // cout << "(" <<Locais[ Vizinhos[P[i].v][P[i].a]].id << "," <<Locais[ P[i].v ].id<< ") ";
       
       
         // (0, 1) (1, 2) (2, 5) (5, 7) (7, 10) (10, 9) (9, 6) (6, 3) (0, 4) (3, 0)
          //0 1 2 5 4 7 10 9 6 3 0
     }
-    cout << endl << "Custo = " << soma << endl;;;
+    //cout << endl << "Custo = " << soma << endl;;;
+
+    
+    return soma;
+
+
+}
+
+
+double Dados::Avalia(vector<Vertice>& P) {
+
+    
+
+    double soma = Custo[P[P.size() - 1].v][P[P.size()-1].a][P[0].v][P[0].a];
+    
+    //cout << endl;
+   // cout << "(" << Vizinhos[P[0].v][P[0].a] << "," << P[0].v << ") ";
+    for (int i = 1; i < P.size();i++) {
+        soma += Custo[P[i-1].v][P[i-1].a][P[i].v][P[i].a];
+    // cout << "(" <<Locais[ Vizinhos[P[i].v][P[i].a]].id << "," <<Locais[ P[i].v ].id<< ") ";
+      
+      
+        // (0, 1) (1, 2) (2, 5) (5, 7) (7, 10) (10, 9) (9, 6) (6, 3) (0, 4) (3, 0)
+         //0 1 2 5 4 7 10 9 6 3 0
+    }
+    //cout << endl << "Custo = " << soma << endl;;;
 
     
     return soma;
@@ -653,11 +690,10 @@ float Dados::Wco_Busca(vector<Vertice>& P) {
 
         }
 
-        cout << " sera ? " << custo_total << endl;
         
             Vertice aux3 = obj;
             for (int i = n_locais -1; i >= 0; i--) {
-                cout << Vizinhos[P[aux3.v].v][aux3.a] << " " << P[aux3.v].v << endl;
+                //cout << Vizinhos[P[aux3.v].v][aux3.a] << " " << P[aux3.v].v << endl;
                 
                 P[i].a = aux3.a;
 

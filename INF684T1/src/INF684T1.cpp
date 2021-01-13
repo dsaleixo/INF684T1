@@ -5,6 +5,7 @@
 #include "Dados.h"
 #include "NoSolucao.h"
 #include "Glns.h"
+#include "LK.h"
 #include <random>
 
 #include "Vertice.h"
@@ -19,13 +20,25 @@ int main(int argc, char* argv[])
     d.ler("mapas/mapa"+mapa+".txt");
     d.imprimir();    
     cout<<"mapa = "<<mapa<<"   jogador = "<<jogador<<endl;
+    long double Tfinal;
+	long double TInicial;
+	TInicial = (clock() / (double)CLOCKS_PER_SEC);
     
-    Glns g(d.n_locais,atoi(argv[2]),0.05,0.0005,0.005,20,5,0.5);
-    g.rodar(d);
+    LK lk(atoi(argv[3]),atoi(argv[2]),d.n_locais,1);
+        
+    lk.rodar(d);		
+				
+   
+    Tfinal = (clock() / (double)CLOCKS_PER_SEC) - TInicial;
+    cout<<"TEmpo "<<Tfinal<<endl;
 
 
     return 0;
 }
+
+
+// Glns g(d.n_locais,atoi(argv[2]),0.05,0.0005,0.005,20,5,0.5);
+//    g.rodar(d);
 //(0,3) (3,6) (6,8) (8,9) (9,7) (7,4) (4,5) (5,2) (2,1) (1,0)
 //
 

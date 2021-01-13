@@ -1,5 +1,9 @@
 #include "Glns.h"
 
+Glns::Glns(){
+    ;
+}
+
 Glns::Glns( int m,int op_construdor,float p1,float p2,float p3,int num_trials,int num_warm, float epslon ){
     this->op_construdor = op_construdor;
     this->p1 = p1;

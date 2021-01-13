@@ -37,7 +37,7 @@ class Glns{
     vector<Nobank> Bf;
     
     Glns(int m, int op_construdor,float p1,float p2,float p3,int num_trials,int num_warm,float epslon );
-    
+    Glns();
     void rodar(Dados &d);
     void Constroi_inicial(Solucao &s, Dados &d);
     void Constroi_InsertRandom(Solucao &s,Dados &d);
