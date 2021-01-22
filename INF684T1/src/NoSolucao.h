@@ -41,8 +41,11 @@ public:
     void Solucao_Vector(vector<Vertice> &V);
     void Vector_Solucao(vector<Vertice> &V);
     void operator=(const Solucao &s);
+    bool operator==(const Solucao &s);
     double Di(int i , Dados &d);
     int getKeismo(int k );
+    void NN_alet(Dados &d,int p);
+    Vertice NN_V(Vertice v,Dados &d);
     
     
     

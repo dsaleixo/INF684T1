@@ -6,6 +6,7 @@
 #include "NoSolucao.h"
 #include "Glns.h"
 #include "LK.h"
+#include "GK.h"
 #include <random>
 
 #include "Vertice.h"
@@ -23,12 +24,38 @@ int main(int argc, char* argv[])
     long double Tfinal;
 	long double TInicial;
 	TInicial = (clock() / (double)CLOCKS_PER_SEC);
+    srand(time(NULL));
+    /*
+    GK gk(d.n_locais);
+
+    gk.inicializa(d);
     
-    LK lk(atoi(argv[3]),atoi(argv[2]),d.n_locais,1);
+    for(int i =0 ;i<1000;i++){
+        cout<<i<<"  custo "<<gk.Populacao[0].second.Avalia(d)<<" "<<gk.Populacao.size()<<" " << (clock() / (double)CLOCKS_PER_SEC) - TInicial<<endl;
+        gk.LS_CO(d);
+        gk.arruma();
+        gk.remove_duplo();
+        gk.nova_geracao(d);
+        if(gk.criterioParada()){
+            break;
+        }
         
-    lk.rodar(d);		
-				
+        
+    }
+    cout<<"custo "<<gk.Populacao[0].second.Avalia(d)<<" "<<gk.Populacao.size()<<endl;
+    
    
+      
+    LK lk(1,1,d.n_locais,0);
+
+    lk.rodar(d);
+ */
+ Glns g(d.n_locais,1,0.05,0.0005,0.005,3,2,0.5);
+     g.rodar(d);
+     
+
+
+
     Tfinal = (clock() / (double)CLOCKS_PER_SEC) - TInicial;
     cout<<"TEmpo "<<Tfinal<<endl;
 
@@ -37,8 +64,7 @@ int main(int argc, char* argv[])
 }
 
 
-// Glns g(d.n_locais,atoi(argv[2]),0.05,0.0005,0.005,20,5,0.5);
-//    g.rodar(d);
+
 //(0,3) (3,6) (6,8) (8,9) (9,7) (7,4) (4,5) (5,2) (2,1) (1,0)
 //
 

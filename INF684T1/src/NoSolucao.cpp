@@ -94,7 +94,21 @@ float Solucao::Avalia(Dados &d){
     return soma;
 }
 
+bool Solucao::operator==(const Solucao &s){
+      int n = T.size()-1;
 
+    
+    int atual1 = T[n].prox;
+    int atual2 = s.T[n].prox;
+   
+    while (atual1 != n){
+        if(atual1!=atual2 || T[atual1].a != s.T[atual2].a)return false;
+        atual1 = T[atual1].prox;
+        atual2 = s.T[atual2].prox;
+    }
+
+    return true;
+}
 
 Vertice Solucao::FrameworkInsertionHeuristics(Dados &d,int k,float max_noisy){
     int n = T.size()-1;
@@ -388,5 +402,74 @@ int Solucao::getKeismo(int k ){
     }
 
     
+
+}
+
+void Solucao::NN_alet(Dados &d,int p){
+    
+    Vertice dump;
+    dump.v=this->T.size()-1;
+
+    Vertice v(0,0);
+    this->add(dump,v);
+    Vertice c1 = this->NN_V(v,d);
+     this->add(v,c1);
+    dump = c1;
+
+    while(this->aberto.size()>0){
+
+        int alet = rand()%100;
+        if(alet>=p) v = this->NN_V(dump,d);
+        else {
+            int g = this->Vi_Random(d);
+             v.v=g;
+             v.a= rand()%d.Vizinhos[v.v].size();
+        }
+        this->add(dump,v);
+       // cout<<"pegou "<<v.v<<endl;
+        dump = v;
+
+    }
+}
+
+Vertice Solucao::NN_V(Vertice v,Dados &d){
+
+       
+    bool achou=false;
+    double menor = 1000000;
+    Vertice c1;
+
+
+    for (int i = 0; i < d.Vizinhos[v.v].size(); i++) {
+        int vis = d.Vizinhos[v.v][i];
+    
+        if (menor > d.Custo[v.v][v.a][vis][d.Map_vizinho[vis][v.v]] && !this->T[vis].usado) {
+            menor = d.Custo[v.v][v.a][vis][d.Map_vizinho[vis][v.v]];
+            c1.v = vis;
+            c1.a = d.Map_vizinho[vis][v.v];
+            achou = true;
+    
+        }
+    }
+    if (achou) {
+            
+        return c1;
+    }
+    for (int i : this->aberto) {
+        for (int j = 0; j < d.Vizinhos[i].size(); j++) {
+            if (menor > d.Custo[v.v][v.a][i][j]) {
+                menor = d.Custo[v.v][v.a][i][j];
+                c1.v = i;
+                c1.a = j;
+            }
+        }
+    }
+
+    return c1;
+
+
+
+    
+
 
 }

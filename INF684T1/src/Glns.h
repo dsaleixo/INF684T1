@@ -4,6 +4,7 @@
 #include "NoSolucao.h"
 #include <stdio.h>
 #include <random>
+#include "LK.h"
 
 class Nobank{
 public:

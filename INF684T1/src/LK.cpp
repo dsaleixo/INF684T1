@@ -159,3 +159,103 @@ void LK::rodar(Dados &d){
 
 
 }
+
+void LK::rodar2(vector<Vertice> &best_s,Dados &d){
+
+
+
+    double melhor=  d.Avalia(best_s);
+    int i=0;
+    int m = d.n_locais;
+ 
+   
+    while(i<m){
+        vector<Vertice> P;
+        cortar_ciclo(best_s,P,i);
+
+        this->ImprovePath2(P,1,d);
+        double novo = d.Avalia(P);
+      //  cout<<novo<<endl;
+        if(novo-melhor<-0.0005){
+            melhor = novo;
+            best_s = P;
+            return;
+            i=0;
+        }else{
+            i++;
+        }
+      
+
+
+
+    }
+    
+
+
+}
+
+
+void LK::rodar3(vector<Vertice> &best_s,Dados &d){
+
+
+
+    double melhor=  d.Avalia(best_s);
+    int i=0;
+    int m = d.n_locais;
+ 
+   
+    while(i<m){
+        vector<Vertice> P;
+        cortar_ciclo(best_s,P,i);
+
+        this->ImprovePath(P,1,d);
+        double novo = d.Avalia(P);
+      //  cout<<novo<<endl;
+        if(novo-melhor<-0.0005){
+            melhor = novo;
+            best_s = P;
+           
+            i=0;
+        }else{
+            i++;
+        }
+      
+
+
+
+    }
+    
+
+
+}
+
+
+void LK::ImprovePath2(vector<Vertice> &P,int depth,Dados &d){
+
+       
+
+        double c_p = d.Avalia(P);
+        vector<Vertice> T=P;
+        double mel =0;
+        for(int i = 1; i<P.size()-1;i++){
+            if(this->R[P[i].v])continue;
+            vector<Vertice> Aux = P;
+            this->vira(Aux,i);
+            double aux = c_p - d.Avalia(Aux);
+            
+            if(aux>mel){
+                T=Aux;
+
+                mel=aux;
+                break;
+              
+            }
+
+        }
+        if(mel>0)P=T;
+
+      
+        
+        
+    
+    }

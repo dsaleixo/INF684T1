@@ -4,6 +4,7 @@ all:
 	g++ -O0 -c -m64 -O -fPIC -fno-strict-aliasing -fexceptions -DNDEBUG -DIL_STD ./src/Vertice.cpp  -I/opt/ibm/ILOG/CPLEX_Studio1210/cplex/include -I/opt/ibm/ILOG/CPLEX_Studio1210/concert/include -I . -o ./obj/Vertice.o
 	g++ -O0 -c -m64 -O -fPIC -fno-strict-aliasing -fexceptions -DNDEBUG -DIL_STD ./src/NoSolucao.cpp  -I/opt/ibm/ILOG/CPLEX_Studio1210/cplex/include -I/opt/ibm/ILOG/CPLEX_Studio1210/concert/include -I . -o ./obj/NoSolucao.o
 	g++ -O0 -c -m64 -O -fPIC -fno-strict-aliasing -fexceptions -DNDEBUG -DIL_STD ./src/Glns.cpp  -I/opt/ibm/ILOG/CPLEX_Studio1210/cplex/include -I/opt/ibm/ILOG/CPLEX_Studio1210/concert/include -I . -o ./obj/Glns.o
+	g++ -O0 -c -m64 -O -fPIC -fno-strict-aliasing -fexceptions -DNDEBUG -DIL_STD ./src/GK.cpp  -I/opt/ibm/ILOG/CPLEX_Studio1210/cplex/include -I/opt/ibm/ILOG/CPLEX_Studio1210/concert/include -I . -o ./obj/GK.o
 	g++ -O0 -c -m64 -O -fPIC -fno-strict-aliasing -fexceptions -DNDEBUG -DIL_STD ./src/LK.cpp  -I/opt/ibm/ILOG/CPLEX_Studio1210/cplex/include -I/opt/ibm/ILOG/CPLEX_Studio1210/concert/include -I . -o ./obj/LK.o
 	g++ -O0 -c -m64 -O -fPIC -fno-strict-aliasing -fexceptions -DNDEBUG -DIL_STD ./src/Dados.cpp -I/opt/ibm/ILOG/CPLEX_Studio1210/cplex/include -I/opt/ibm/ILOG/CPLEX_Studio1210/concert/include  -I . -o ./obj/Dados.o
 	g++ -O0 -c -m64 -O -fPIC -fno-strict-aliasing -fexceptions -DNDEBUG -DIL_STD ./src/Base.cpp -I/opt/ibm/ILOG/CPLEX_Studio1210/cplex/include -I/opt/ibm/ILOG/CPLEX_Studio1210/concert/include  -I . -o ./obj/Base.o 	

@@ -12,8 +12,8 @@ Glns::Glns( int m,int op_construdor,float p1,float p2,float p3,int num_trials,in
     this->p3=p3;
     this->num_trials=num_trials;
     this->num_warm =num_warm ;
-    this->first_improve = m*15;
-    this->last_improve=m*30;
+    this->first_improve = m*10;
+    this->last_improve=m*15;
     this->epslon = epslon;
     double labdas_i[]= {0,0.1,0.25,0.5,1.2,1.75,10};
     double labdas_f[]= {1,1.1, 1.41,2,10};
@@ -44,7 +44,7 @@ Glns::Glns( int m,int op_construdor,float p1,float p2,float p3,int num_trials,in
 }
 
 void Glns::rodar(Dados &d){
-    Nobank b(0.1,0.1,1);
+    Nobank b(1,0,1);
     
     Solucao best_s(d.n_locais);
     
@@ -90,6 +90,7 @@ void Glns::rodar(Dados &d){
 
                 vector<Vertice> vv;
                 T_new .Solucao_Vector(vv);
+                
                 d.CO(vv);
                 T_new .Vector_Solucao(vv);
 
